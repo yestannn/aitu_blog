@@ -1,0 +1,47 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{% url 'user-detail' post.author.pk %}">{{ object.author }}</a>
+              <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+              {% if object.author == user %}
+                <div>
+                <a class = 'btn btn-secondary btn-sm mt-1' href="{% url 'post-update' object.id %}">Update</a>
+                <a class = 'btn btn-danger btn-sm mt-1' href="{% url 'post-delete' object.id %}">delete</a>
+                </div>
+
+
+              {% endif%}
+            </div>
+            <h2 class="article-title" >{{ object.title }}</h2>
+            <p class="article-content">{{ object.content }}</p>
+          </div>
+        </article>
+
+        <hr>
+        <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
+
+        
+        {% for comment in post.comments.all %}
+          {% if user.is_authenticated or comment.approved_comment %}
+            <div class="comment">
+                <div class="date">
+                    {{ comment.date_posted }}
+                    {% if object.author == user or comment.author == user %}
+                        <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span>delete</a>
+                    {% endif %}
+                </div>
+                <strong>{{ comment.author }}</strong>
+                <p>{{ comment.content|linebreaks }}</p>
+            </div>
+            {% endif %}
+            {% empty %}
+              <p>No comments here yet :(</p>
+
+        {% endfor %}
+{% endblock content %}

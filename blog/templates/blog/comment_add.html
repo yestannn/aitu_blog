@@ -1,0 +1,7 @@
+<div class="comment-form-container">
+    <form class="comment-form" method="post" action="{% url 'comment_add' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value='Submit'>
+    </form>
+</div>

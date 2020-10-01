@@ -1,0 +1,25 @@
+{% extends "blog/base.html" %}
+{% block content %}
+
+
+
+<h1>Friends</h1>
+{% for post in friends %}
+    <article class="media content-section">
+      <img class="rounded-circle article-img" src="{{ post.profile.image.url }}" >
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="{% url 'user-detail' post.pk %}">{{ post.username }}</a>
+        </div>
+
+        <h2><a class="article-title" href="{% url 'user-detail' post.pk %}">{{ post.get_full_name }}</a></h2>
+        <small class="text-muted"> last seen {{ post.last_login }}</small>
+
+    </div>
+
+    </article>
+
+
+{% endfor %}
+
+{% endblock content %}
